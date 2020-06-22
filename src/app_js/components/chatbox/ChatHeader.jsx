@@ -4,6 +4,7 @@ import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
@@ -19,7 +20,8 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 
 import { background } from '../../utilities/img/navBackground';
 
-const drawerWidth = 240;
+import { CHAT_SIDE_BAR_WIDTH, CHAT_TITLE_LABEL, CHAT_SIGN_IN_LABEL, CHAT_SIGN_OUT_LABEL } from '../../constants/chatConstants';
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     display: 'flex',
@@ -30,19 +32,17 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    // backgroundColor: fade(theme.palette.primary.dark, 0.85)
     backgroundImage: `url(data:image/png;base64,${background})`,
     backgroundRepeat: 'no-repeat',
     backgroundColor: theme.palette.primary.dark[900],
-    // backgroundSize: 'cover',
     height: '100%',
     width: '100%',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },
   appBarAlt: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
+    width: `calc(100% - ${CHAT_SIDE_BAR_WIDTH}px)`,
+    marginLeft: CHAT_SIDE_BAR_WIDTH,
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -61,36 +61,11 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
     },
   },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.65),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.85),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   inputRoot: {
     color: 'inherit',
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -115,6 +90,7 @@ const useStyles = makeStyles((theme) => ({
 const ChatHeader = ({ open, handleOpenToggle }) => {
   const classes = useStyles();
   const theme = useTheme();
+  const [statusLabel, setStatusLabel] = useState(CHAT_SIGN_IN_LABEL);
 
   return (
     <div className={classes.grow}>
@@ -134,8 +110,22 @@ const ChatHeader = ({ open, handleOpenToggle }) => {
           <MenuIcon />
         </IconButton>
         <Typography className={classes.title} variant="h6" noWrap>
-          Medi Chat
+        {CHAT_TITLE_LABEL}
         </Typography>
+        <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            <IconButton aria-label="show number of users in the community" color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+            <IconButton aria-label="show number of notifications" color="inherit">
+              <Badge badgeContent={17} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <Button color="inherit">{statusLabel}</Button>
+            </div>
         </Toolbar>
       </AppBar>
     </div>
