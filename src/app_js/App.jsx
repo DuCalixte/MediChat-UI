@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import Routers from './components/routers/Routers';
-// import Home from './Home';
-import './App.scss'
+import { Provider, ReactReduxContext } from 'react-redux';
+import { store } from './utilities/store';
+import './App.scss';
 
 export default class App extends Component {
   render() {
+    const boo = "hello"
+    const context = ReactReduxContext;
     return (
-      <div>
-        <Routers />
-      </div>
+      <Provider {...{store,context}}>
+        <Routers {...{context}}/>
+      </Provider>
     )
   }
 }

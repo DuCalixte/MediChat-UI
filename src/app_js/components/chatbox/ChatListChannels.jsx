@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
@@ -8,7 +9,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Badge from '@material-ui/core/Badge';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import ChatIcon from '@material-ui/icons/Chat';
+import AndroidIcon from '@material-ui/icons/Android';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { CHAT_SIDE_BAR_CHANNELS_LABEL } from '../../constants/chatConstants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatListChannels = () => {
+  const channelList = [];
+  const { channels = [] } = useSelector(state => state.chatUser.user);
+  const user = useSelector(state => state.chatUser.user);
+  console.log('CHANNELS', channels, user);
+  // const isLoggedIn = useSelector(state => state.chatUser.isLoggedIn);
   const list = [
     { title: 'The Gallery', icon: null }, { title: 'Announcements', icon: null }
   ];
@@ -36,25 +45,19 @@ const ChatListChannels = () => {
     <List
     aria-labelledby="channels-list"
       subheader={
-        <ListSubheader component="h2" className={classes.subtitle} id="channels-list">
-          Channels
+        <ListSubheader component="h2" className={classes.subtitle} id="channels-list">{CHAT_SIDE_BAR_CHANNELS_LABEL}
         </ListSubheader>
       }
-      className={classes.root}
-    >
-      <ListItem button key='the_gallery'>
+      className={classes.root}>
+      {channels.map(({name, description, chatBot, channelId}) => (
+        <ListItem button key={channelId}>
           <ListItemIcon>
-            <Badge color="primary" badgeContent={99} showZero><ChatIcon /></Badge>
+            <Badge color="primary" badgeContent={1}>{chatBot ? <AndroidIcon /> : <ChatIcon />}</Badge>
           </ListItemIcon>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-          <ListItemText primary='The Gallery' /></Link>
-      </ListItem>
-      <ListItem button key='announcements'>
-        <ListItemIcon>
-          <Badge color="primary" badgeContent={88}><AnnouncementIcon /></Badge>
-        </ListItemIcon>
-        <Link to="/" style={{ textDecoration: 'none' }}><ListItemText primary='Announcements' /></Link>
-      </ListItem>
+          <Link to={`/chat/channel/${channelId}`} style={{ textDecoration: 'none' }}>
+          <ListItemText primary={name} alt={description} /></Link>
+        </ListItem>
+      ))}
     </List>
   )
 };

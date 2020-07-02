@@ -13,8 +13,6 @@ import ChatListUsers from './ChatListUsers';
 
 import { CHAT_SIDE_BAR_WIDTH } from '../../constants/chatConstants';
 
-
-
 const useStyles = makeStyles((theme) => ({
   hide: {
     display: 'none',

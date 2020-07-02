@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,6 +13,15 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import AndroidIcon from '@material-ui/icons/Android';
 import { Link } from "react-router-dom";
+import map from 'lodash/map';
+
+import { loadChatUsers, resetChatUsers } from '../../ducks/chatUsers.duck';
+
+import {
+  CHAT_SIDE_BAR_USERS_LABEL,
+  CHAT_TITLE_LABEL,
+  CHAT_SIGN_IN_LABEL,
+  CHAT_SIGN_OUT_LABEL } from '../../constants/chatConstants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,33 +40,32 @@ const useStyles = makeStyles((theme) => ({
 
 const ChatListUsers = () => {
   const classes = useStyles();
-  const users = [
-    { username: 'ckalia', avatar: 'https://picsum.photos/64', feeling: "I'm feeling hungry" },
-    { username: 'jiglesia', avatar: 'https://picsum.photos/32', feeling: "I'm cheeling out..." },
-  ]
+  const dispatch = useDispatch();
+  const { users = [], total } = useSelector(state => state.chatUsers);
+  const isLoggedIn = useSelector(state => state.chatUser.isLoggedIn);
+
+  useEffect(() => {
+    console.log('ISLOGGING', isLoggedIn)
+    if (isLoggedIn) dispatch(loadChatUsers());
+    else dispatch(resetChatUsers());
+  }, [isLoggedIn]);
   return (
     <List
     aria-labelledby="channels-list"
       subheader={
         <ListSubheader component="h2" className={classes.subtitle} id="channels-list">
-          Users
+          <Badge
+            badgeContent={total}
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+            color="primary">{CHAT_SIDE_BAR_USERS_LABEL}</Badge>
         </ListSubheader>
-      }
-      className={classes.root}>
-      <ListItem button key='chat_bot'>
-          <ListItemIcon>
-            <Badge color="primary" badgeContent={99} showZero><AndroidIcon /></Badge>
-          </ListItemIcon>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-          <ListItemText primary='ChatBot' /></Link>
-      </ListItem>
-      <ListItem key='#'><Divider /></ListItem>
-    {users.map(({username, avatar, feeling}) => (
-      <ListItem alignItems="flex-start" button key={username}>
-        <ListItemAvatar><Avatar alt="User Info" src={avatar} /></ListItemAvatar>
-        <Link to="/" style={{ textDecoration: 'none' }}>
+      } className={classes.root}>
+    {map(users, ({fullname, gravatar, status, userId}) => (
+      <ListItem alignItems="flex-start" button key={userId}>
+        <ListItemAvatar><Avatar alt="User Info" src={ gravatar == '' ? `https://picsum.photos/${1 + Math.floor(Math.random() * Math.floor(32))}`: gravatar } /></ListItemAvatar>
+        <Link to={`/chat/user/${userId}`} style={{ textDecoration: 'none' }}>
           <ListItemText
-          primary={username}
+          primary={fullname}
           secondary={
             <>
             <Typography
@@ -64,7 +73,7 @@ const ChatListUsers = () => {
               variant="body2"
               className={classes.inline}
               color="textPrimary"
-            >{feeling}</Typography>
+            >{status}</Typography>
             </>
           }
           />

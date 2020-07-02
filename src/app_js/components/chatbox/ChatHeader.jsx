@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,10 +18,15 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { logout } from '../../ducks/chatUser.duck';
 
 import { background } from '../../utilities/img/navBackground';
 
-import { CHAT_SIDE_BAR_WIDTH, CHAT_TITLE_LABEL, CHAT_SIGN_IN_LABEL, CHAT_SIGN_OUT_LABEL } from '../../constants/chatConstants';
+import { 
+  CHAT_SIDE_BAR_WIDTH,
+  CHAT_TITLE_LABEL,
+  CHAT_SIGN_IN_LABEL,
+  CHAT_SIGN_OUT_LABEL } from '../../constants/chatConstants';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -88,9 +94,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatHeader = ({ open, handleOpenToggle }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
-  const [statusLabel, setStatusLabel] = useState(CHAT_SIGN_IN_LABEL);
+  const [statusLabel, setStatusLabel] = useState(CHAT_SIGN_OUT_LABEL);
+
+  const handleSignin = e => {
+    e.preventDefault();
+    dispatch(logout());
+  }
 
   return (
     <div className={classes.grow}>
@@ -124,7 +136,7 @@ const ChatHeader = ({ open, handleOpenToggle }) => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <Button color="inherit">{statusLabel}</Button>
+            <Button color="inherit" onClick={handleSignin}>{CHAT_SIGN_OUT_LABEL}</Button>
             </div>
         </Toolbar>
       </AppBar>

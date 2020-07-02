@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Login from '../components/logins/Login';
-import SignUp from '../components/logins/SignUp';
+import Register from '../components/logins/Register';
 import {
   BrowserRouter as Router,
   Switch,

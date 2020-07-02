@@ -1,5 +1,6 @@
 {
   "presets": ["@babel/preset-react"],
+  "plugins": ["@babel/plugin-transform-runtime"],
   "env": {
     "development": {
       "presets": [["@babel/preset-react", { "development": true }]]

@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Login from '../components/logins/Login';
-import SignUp from '../components/logins/SignUp';
+import Register from '../components/logins/Register';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useHistory
 } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { background } from '../utilities/img/background';
+
+import { APP_LOGIN_URI, APP_REGISTER_URI, APP_HOME_URI } from '../constants/appConstants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +42,10 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
+  textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
   }
@@ -46,17 +53,28 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginPage = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const isLoggedIn = useSelector(state => state.chatUser.isLoggedIn);
+  const dispatch = useDispatch();
+  console.log('LoginPage-HISTORY', history)
+
+  // reset login status
+  useEffect(() => {
+    console.log('LOGIN PAGE', isLoggedIn);
+    // console.log('LOGIN PAGE: location', location);
+    if(isLoggedIn) history.push("/");
+  }, [isLoggedIn]);
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <Switch>
-          <Route path="/login">
+          <Route path={APP_LOGIN_URI}>
             <Login classes={classes} />
           </Route>
-          <Route path="/signup">
-            <SignUp classes={classes} />
+          <Route path={APP_REGISTER_URI}>
+            <Register classes={classes} />
           </Route>
         </Switch>
       </Grid>

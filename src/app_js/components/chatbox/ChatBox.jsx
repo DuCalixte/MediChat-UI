@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
-import ChatContent from './ChatContent';
+import {
+  useLocation, useParams
+} from "react-router-dom";
+
+import ChatBoxContent from './ChatBoxContent';
 import ChatInput from './ChatInput';
+import ChatBoxHeader from './ChatBoxHeader';
 
 import { CHAT_SIDE_BAR_WIDTH, CHAT_INPUT_FORM_MAX_HEIGHT } from '../../constants/chatConstants';
+import { loadChatChannel } from '../../ducks/chatChannel.duck';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatBox = ({open}) => {
+  console.log('LOCATUIB', useLocation(), useParams())
+  const dispatch = useDispatch();
+  const { number:channelId } = useParams();
+  useEffect(() => {
+    dispatch(loadChatChannel(channelId));
+  }, [channelId])
   const classes = useStyles();
   return (
     <main
@@ -41,11 +54,11 @@ const ChatBox = ({open}) => {
         })}
       >
         <div>
-          <ChatContent />
-          <ChatInput />
+          <ChatBoxHeader />
+          <ChatBoxContent id={channelId} />
         </div>
     </main>
-  )
+  );
 };
 
 export default ChatBox;
