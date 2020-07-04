@@ -22,7 +22,7 @@ import {
 } from '../../constants/appConstants';
 
 
-const Routers = ({context}) => {
+const Routers = () => {
   // const isLoggedIn = useSelector(state => state.chatUser.isLoggedIn);
   // console.log('ROUTERS', isLoggedIn);
   // const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const Routers = ({context}) => {
   //   if(isLoggedIn) history.push("/");
   // }, [isLoggedIn, location]);
   return (
-    <Router context={context} forceRefresh={true}>
+    <Router>
       <Switch>
         <PrivateRoute exact path="/" component={ChatPage} />
         <PrivateRoute path={APP_CHAT_URI} component={ChatPage} />

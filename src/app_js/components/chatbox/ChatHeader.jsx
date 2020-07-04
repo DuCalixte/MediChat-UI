@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, } from 'react-redux';
 import clsx from 'clsx';
 import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -22,7 +22,7 @@ import { logout } from '../../ducks/chatUser.duck';
 
 import { background } from '../../utilities/img/navBackground';
 
-import { 
+import {
   CHAT_SIDE_BAR_WIDTH,
   CHAT_TITLE_LABEL,
   CHAT_SIGN_IN_LABEL,

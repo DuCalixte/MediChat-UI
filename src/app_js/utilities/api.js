@@ -12,15 +12,15 @@ export const apiService = {
 
 function logout() {
   localStorage.removeItem('user');
-  localStorage.removeItem('chatToken');
+  localStorage.removeItem('authToken');
 }
 
  function login(credentials) {
-  return postUserApi(credentials, 'signin')
+  return postAuthRequest(credentials, 'signin')
 }
 
 function register(userProfile) {
-  return postUserApi(userProfile, 'signup')
+  return postAuthRequest(userProfile, 'signup')
 }
 
 function loadChatUsers() {
@@ -39,10 +39,13 @@ function loadChatChannel(id) {
 }
 
 const getDataApi = (page, id=null) => {
+  const authToken = localStorage.authToken;
+  console.log('AUTHTOKEN', authToken)
   const requestOptions = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'Authorization': `Bearer ${authToken}`,
       // mode: 'cors',
       // cache: 'default',
     }
@@ -52,24 +55,43 @@ const getDataApi = (page, id=null) => {
     .then(handleResponse)
 }
 
-const postUserApi = (content, page) => {
+const postAuthRequest = (content, page) => {
+  const headers = { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+  return postRequesApi(content, page, headers)
+  .then(({data, authToken}) => {
+    const user = userFilter(data);
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('authToken', JSON.stringify(authToken));
+    return user;
+  })
+}
+
+const postRequesApi = (content, page, headers) => {
   const requestOptions = {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    },
-    // mode: 'cors',
-    // cache: 'default',
+    headers,
     body: JSON.stringify(content)
   };
   return fetch(`${API_URL}/${page}?`, requestOptions)
     .then(handleResponse)
-    .then(({data}) => {
-      const user = userFilter(data);
-      localStorage.setItem('user', JSON.stringify(user));
-      return user;
-    })
 }
+
+// const postUserApi = (content, page, headers) => {
+//   const requestOptions = {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+//     },
+//     body: JSON.stringify(content)
+//   };
+//   return fetch(`${API_URL}/${page}?`, requestOptions)
+//     .then(handleResponse)
+//     .then(({data}) => {
+//       const user = userFilter(data);
+//       localStorage.setItem('user', JSON.stringify(user));
+//       return user;
+//     })
+// }
 
 const handleResponse = (response) => {
   return response.text().then( content => {
@@ -83,7 +105,7 @@ const handleResponse = (response) => {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }
-      // console.log('DATA', JSON.stringify(data))
+      console.log('DATA', JSON.stringify(data))
     return data;
   });
 }

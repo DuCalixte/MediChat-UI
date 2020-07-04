@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -33,16 +34,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ChatBoxContent = ({id}) => {
-const { container, leftGrid, rightGrid, paper } = useStyles();
+const ChatBoxContent = () => {
+const { container, paper } = useStyles();
+const userId = useSelector(state => state.chatUser.user.userId || 0);
+const channelId = useSelector(state => state.chatChannel.channelId || 0);
 
   return (
     <Grid container spacing={1}>
       <Grid item xs={9}>
-        <ChatBoxWindow className={leftGrid} />
+        <ChatBoxWindow {...{userId, channelId}} />
       </Grid>
       <Grid item xs={3}>
-        <ChatBoxInfomation className={rightGrid} />
+        <ChatBoxInfomation />
       </Grid>
     </Grid>
   )

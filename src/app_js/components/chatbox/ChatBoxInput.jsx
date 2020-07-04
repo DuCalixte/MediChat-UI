@@ -16,16 +16,21 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import SendIcon from '@material-ui/icons/Send';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
+  chatForm: {
+    // display: 'flex',
     // flexWrap: 'wrap',
-    flexDirection: 'column',
+    // flexDirection: 'column',
     // alignSelf: 'flex-start',
     // height: 'auto',
-    height: `calc(100% - "60px")`,
+    // height: `calc(100% - "60px")`,
     // maxHeight: '30px',
-    width: '100%',
-    verticalAlign: 'bottom',
+    // width: '100%',
+    // verticalAlign: 'bottom',
+    padding: '40px 0',
+    position: 'fixed',
+    bottom: 0,
+    width: '72ch',
+    maxWidth: 'md'
   },
   margin: {
     margin: theme.spacing(1),
@@ -40,10 +45,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatBoxInput = ({handleSendMessage}) => {
-  const { root, margin, textField, button } = useStyles();
-  const { channelId = 1 } = useSelector(state => state.chatChannel);
+  const { chatForm, margin, textField, button } = useStyles();
+  // const { channelId = 1 } = useSelector(state => state.chatChannel);
   // const { fullname = '', userId = 0, gravatar = '', color = 'red'  } = useSelector(state => state.chatUser);
-  const { user:{ fullname='', userId = 0, gravatar='', color = 'red'  } = {} } = useSelector(state => state.chatUser);
+  // const { user:{ fullname='', userId = 0, gravatar='', color = 'red'  } = {} } = useSelector(state => state.chatUser);
+
+  const channelId = useSelector(state => state.chatChannel.channelId || 0);
+  const user = useSelector(state => state.chatUser.user || {});
+  const { fullname='', userId = 0, gravatar='', color = 'red'  } = user;
+
   const [message, setMessage] = useState('');
 
   const handleMessageChange = (e) => {
@@ -59,9 +69,9 @@ const ChatBoxInput = ({handleSendMessage}) => {
   const handleMouseDown = (e) => { console.log('mouse is down') }//e.preventDefault();}
 
   return (
-    <div className={root}>
-        <FormControl className={clsx(margin, textField)} variant="outlined">
-          <TextField
+    <div className={chatForm}>
+      <FormControl className={clsx(margin, textField)} variant="outlined">
+        <TextField
             label="Type Message..."
             id="insert-message-to-channel"
             multiline
@@ -80,8 +90,8 @@ const ChatBoxInput = ({handleSendMessage}) => {
               </IconButton>
               </InputAdornment>,
             }}/>
-        </FormControl>
-        </div>
+      </FormControl>
+    </div>
   )
 };
 

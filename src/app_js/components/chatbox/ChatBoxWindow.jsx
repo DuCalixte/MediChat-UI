@@ -1,4 +1,4 @@
-import React, { useState, useStyle, useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useStyle, useMemo, useCallback, useRef, useEffect, shallowEqual } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,23 +11,28 @@ import ChatInput from './ChatInput';
 
 const useStyles = makeStyles((theme) => ({
   chatbox: {
+    display: 'flex',
+    flexDirection: 'column',
     maxWidth: "lg",
-    height: "500px",
+    // height: "500px",
+    display: 'relative',
+    overflow: 'auto',
+    height: '50vh',
     // minHeight: "100%",
     // display: "flex",
-    flexDirection: "column",
-    margin: "normal"
+    // flexDirection: "column",
+    // margin: "normal"
   },
 }));
 
-const ChatBoxWindow = () => {
-  const {chatbox} = useStyles();
-  const { channelId = 1 } = useSelector(state => state.chatChannel);
+const ChatBoxWindow = ({userId, channelId}) => {
+  const { chatbox } = useStyles();
+
   const WEBSOCKET_BASE_URL = process.env.WEBSOCKET_BASE_URL || 'ws:localhost:8001/socket';
 
-  console.log('CHANNEL', channelId, `${WEBSOCKET_BASE_URL}${channelId}`)
+  console.log('CHANNEL ID', channelId);
+  const socketUrl = `${WEBSOCKET_BASE_URL}${userId}/channel/${channelId}`;
 
-  const [socketUrl, setSocketUrl] = useState(`${WEBSOCKET_BASE_URL}${channelId === 0 ? 1 : channelId}`);
   const messageHistory = useRef([]);
 
   const {
@@ -42,10 +47,8 @@ const ChatBoxWindow = () => {
 });
 
 
-// messageHistory.current = useMemo(() => messageHistory.current.concat(lastMessage),[lastMessage]);
-// messageHistory.current = useMemo(() => messageHistory.current.concat(lastJsonMessage),[lastJsonMessage]);
-messageHistory.current = useMemo(() =>
-    messageHistory.current.concat(lastJsonMessage),[lastJsonMessage]);
+messageHistory.current = useMemo(() => messageHistory.current.concat(lastJsonMessage),[lastJsonMessage]);
+
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: 'Connecting',
@@ -58,6 +61,7 @@ messageHistory.current = useMemo(() =>
   const handleSendMessage = useCallback((message) => {
     console.log('MESSAGE--->', message, messageHistory.current);
     sendJsonMessage(message)
+    // sendMessage("Hello")
   }, []);
 
   return (

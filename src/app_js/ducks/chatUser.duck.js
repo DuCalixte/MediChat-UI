@@ -14,7 +14,8 @@ import {
 import { APP_LOGIN_URI, APP_REGISTER_URI, APP_HOME_URI } from '../constants/appConstants';
 
 let userStorage = JSON.parse(localStorage.getItem('user'));
-// const initialState = { isLoggedIn = false, registering = false, user = (user ? user : {}) }= {};
+console.log('Looking INITIALSTATE')
+// const initialState = { isLoggedIn: false, registering: false, user: {} };
 const initialState = { isLoggedIn: !!userStorage, registering: false, user: (userStorage ? userStorage : {}) };
 
 export function chatUserReducer(state = initialState, action = {}) {

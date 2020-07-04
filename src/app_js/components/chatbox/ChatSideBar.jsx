@@ -6,6 +6,11 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import clsx from 'clsx';
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+
 
 import ChatUser from './ChatUser';
 import ChatListChannels from './ChatListChannels';
@@ -27,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
+    fontSize: 24,
+    color: theme.palette.common.white,
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
@@ -36,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 const ChatSideBar = ({ open, handleCloseToggle }) => {
   const classes = useStyles();
   const theme = useTheme();
+
 
   return (
     <Drawer
@@ -47,18 +55,20 @@ const ChatSideBar = ({ open, handleCloseToggle }) => {
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.drawerHeader}>
+      <List disablePadding>
+        <ListItem className={clsx(classes.item, classes.itemCategory, classes.drawerHeader)}>
           <IconButton onClick={handleCloseToggle}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
-        </div>
+        </ListItem>
         <ChatUser />
         <Divider />
         <ChatListChannels />
         <Divider />
         <ChatListUsers />
+        </List>
       </Drawer>
-  )
+  );
 };
 
 export default ChatSideBar;

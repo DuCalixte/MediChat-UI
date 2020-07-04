@@ -24,7 +24,7 @@ export const CHAT_APP_LOGIN_LINK = "signin";
 export const CHAT_APP_REGISTER_LINK = "signup";
 export const CHAT_APP_CHAT_LINK = "chat";
 
-
+export const CHAT_SIDE_BAR_VIDEO ="Video Chat Channel"
 export const CHAT_SIDE_BAR_CHANNELS_LABEL = "Chat Channels";
 export const CHAT_SIDE_BAR_USERS_LABEL = "Chat Users";
 
@@ -32,3 +32,6 @@ export const CHAT_SIDE_BAR_CHAT_USERS_LABEL = "Chat Users";
 export const CHAT_SIDE_BAR_CHAT_CHANNEL_LABEL = "Chat Channels";
 
 export const CHAT_INFO_CHANNEL_USERS_LABEL = "Channel Users";
+
+export const CHAT_WELCOME_MESSAGE_TITLE = "Welcome Medi Chat";
+export const CHAT_WELCOME_MESSAGE_SUBTITLE = "You may it this far, Enjoy!";

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Link } from "react-router-dom";
+import ListItem from '@material-ui/core/ListItem';
 
 const useStyles = makeStyles((theme) => ({
   text: {
@@ -15,10 +15,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatUser = () => {
-  const {fullname} = useSelector(state => state.chatUser.user);
+  const user = useSelector(state => state.chatUser.user || {});
+  const { userId, fullname }  = user;
   const classes = useStyles();
   return (
-    <Typography component="h5" variant="h5" className={classes.text} gutterBottom>{fullname}</Typography>
+    <ListItem key={userId}>
+      <Typography component="h5" variant="h5" className={classes.text} gutterBottom>{fullname}</Typography>
+    </ListItem>
   )
 };
 

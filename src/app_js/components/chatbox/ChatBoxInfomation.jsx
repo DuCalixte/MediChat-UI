@@ -62,11 +62,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatBoxInfomation = () => {
-
-
-  // const data = useSelector(state => state.chatUser)
-  const { users = [] } = useSelector(state => state.chatChannel);
-  const { user:{ nickname='', gravatar='', status='' } = {} } = useSelector(state => state.chatUser);
+  const users = useSelector(state => state.chatChannel.users || []);
+  const user = useSelector(state => state.chatUser.user || {});
+  const { nickname='', gravatar='', status='' } = user;
   const {card, header, content, list, avatar, listTitle, headerTitle } = useStyles();
 
   console.log('USERS', users);

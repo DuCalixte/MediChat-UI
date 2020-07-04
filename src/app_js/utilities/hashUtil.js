@@ -4,7 +4,7 @@ export const chatUsersFilter = ({ lists, total }) => {
 }
 
 export const userFilter = data => {
-  const { ID:userId, email, channels:channelList = [], profile: { nickname, firstname, lastname, gravatar = "", color, isLocal, aboutMe:status } = {} } = data;
+  const { ID:userId, email, channels:channelList = [], profile: { nickname, firstname, lastname, gravatar = "", color, isLocal, status } = {} } = data;
   const channels = channelsFilter(channelList || []);
   return { userId, nickname, firstname, lastname, email, channels: channelsFilter(channels), gravatar, color, status, isLocal, fullname: [firstname, lastname].join(' ') }
 }

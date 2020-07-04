@@ -3,6 +3,7 @@ import React from 'react';
 import ChatHeader from '../components/chatbox/ChatHeader';
 import ChatSideBar from '../components/chatbox/ChatSideBar';
 import ChatBox from '../components/chatbox/ChatBox';
+import ChatWelcome from '../components/chatbox/ChatWelcome';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { handleToggleState } from '../utilities/hooks/handleToggleState';
 
@@ -23,10 +24,6 @@ const useStyles = makeStyles( themes => ({
 const ChatPage = () => {
   const classes = useTheme();
   const { path, url } = useRouteMatch();
-  const { topicId } = useParams();
-  const chatBotId = 1;
-  const info = useParams();
-  console.log('TOPICID', info)
   const { open, handleOpenToggle, handleCloseToggle } = handleToggleState(false);
   return (
     <div className={classes.root}>
@@ -34,18 +31,13 @@ const ChatPage = () => {
       <ChatSideBar  {...{open, handleCloseToggle}} />
       <Switch>
           <Route exact path="/">
-            <Redirect to={`/chat/channel/${chatBotId}`} />
+            <Redirect to="/chat" />
           </Route>
-          <Route exact path="/chat">
-            <Redirect to={`/chat/channel/${chatBotId}`} />
-          </Route>
+          <Route exact path="/chat"><ChatWelcome {...{open}} /></Route>
           <Route path="/chat/user/:number">
             <ChatBox {...{open}} />
           </Route>
           <Route path="/chat/channel/:number">
-            <ChatBox {...{open}} />
-          </Route>
-          <Route path="/chat/user/video">
             <ChatBox {...{open}} />
           </Route>
         </Switch>

@@ -27,8 +27,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 const ChatBoxHeader = () => {
-  useEffect(() => {}, [])
-  const { name='Channel', description='' } = useSelector(state => state.chatChannel);
+  const chatChannel = useSelector(state => state.chatChannel);
+  const { name='Channel', description='' } = chatChannel;
+
   const { title, titleContainer, subtitle } = useStyles();
   return (
     <div className={titleContainer}>
