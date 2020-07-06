@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useReducer } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import map from 'lodash/map';
 import compact from 'lodash/compact';
@@ -16,15 +17,10 @@ import ImageIcon from '@material-ui/icons/Image';
 const useStyles = makeStyles((theme) => ({
   container: {
     width: '100%',
-    // minHeight:'100%',
-    // position: 'fixed',
     height: '100%',
-    // top: 0,
     maxWidth: 'lg',
     overflowY: 'scroll',
     scrollBehavior: 'smooth',
-    // height: 'auto',
-    // verticalAlign: 'top',
     backgroundColor: theme.palette.background.paper,
   },
   list: {
@@ -32,10 +28,16 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '1.5em'
   },
   listItem: {
-    // height: '50px',
     maxWidth: '36ch',
     backgroundColor: '#cf2302',
     margin: '5px 0px 5px 10px'
+  },
+  avatar: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
+  itemText: {
+    fontSize: '0.9em',
   },
   inline: {
     display: 'inline',
@@ -43,25 +45,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChatBoxMessageList = ({messages}) => {
-  // console.log('MESSAGES', map(messages, (data) => data))
   const pick = array => array[Math.floor(array.length * Math.random())];
-  const { container, list, listItem, inline } = useStyles();
-  // const messagez = [
-  //   { fullname: 'Cool Moody', color: '#cdfea0', gravatar: 'https://picsum.photos/64', message: "I'm feeling hungry", messageId: 1, userId: 1 },
-  //   { fullname: 'Juan Pablo', color: '#abcd04', gravatar: 'https://picsum.photos/32', message: "I'm cheeling out...", messageId: 2, userId: 2 },
-  //   { fullname: 'Cool Moody', color: '#cdfea0', gravatar: 'https://picsum.photos/64', message: "Great, I'll talk to you later", messageId: 3, userId: 1 },
-  // ]
+  const { container, list, listItem, avatar, inline, itemText } = useStyles();
+  console.log(messages)
 
   return (
     <>
     <CssBaseline />
     <Container fixed className={container}>
       <List className={list}>
-      {map(compact(messages), ({fullname, gravatar, color, message, messageId} = {}) => (
+      {map(compact(messages), ({name, gravatar, color, message, messageId} = {}) => (
         <ListItem key={messageId} className={listItem} alignItems="flex-start" style={{backgroundColor: 'transparent', marginLeft: pick([12,24,36]) + 'px'}}>
-        <ListItemAvatar><Avatar alt={fullname} src={gravatar} /></ListItemAvatar>
-        <ListItemText style={{background: color}}
-          primary={fullname}
+        <ListItemAvatar><Avatar className={avatar} alt={name} src={gravatar} /></ListItemAvatar>
+        <ListItemText style={{background: color}} className={itemText}
+          primary={name}
           secondary={<span>{message}</span>}
         />
       </ListItem>

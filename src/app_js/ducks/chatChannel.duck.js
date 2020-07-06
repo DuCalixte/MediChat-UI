@@ -26,7 +26,7 @@ export function chatChannelReducer(state = initialState, action = {}) {
 export const loadChatChannel = id => {
   const request = () => ({ type: CHAT_CHANNEL_REQUEST })
   const success = ({name, description, chatBot, isPrivate, users, websocket, channelId}) => ({ type: CHAT_CHANNEL_SUCCESS, name, description, chatBot, isPrivate, users, websocket, channelId })
-  const failure = error => ({ type: CHAT_USERS_FAILURE, error });
+  const failure = error => ({ type: CHAT_CHANNEL_FAILURE, error });
 
   return dispatch => {
     dispatch(request());

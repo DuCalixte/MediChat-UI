@@ -17,15 +17,6 @@ import SendIcon from '@material-ui/icons/Send';
 
 const useStyles = makeStyles((theme) => ({
   chatForm: {
-    // display: 'flex',
-    // flexWrap: 'wrap',
-    // flexDirection: 'column',
-    // alignSelf: 'flex-start',
-    // height: 'auto',
-    // height: `calc(100% - "60px")`,
-    // maxHeight: '30px',
-    // width: '100%',
-    // verticalAlign: 'bottom',
     padding: '40px 0',
     position: 'fixed',
     bottom: 0,
@@ -46,13 +37,10 @@ const useStyles = makeStyles((theme) => ({
 
 const ChatBoxInput = ({handleSendMessage}) => {
   const { chatForm, margin, textField, button } = useStyles();
-  // const { channelId = 1 } = useSelector(state => state.chatChannel);
-  // const { fullname = '', userId = 0, gravatar = '', color = 'red'  } = useSelector(state => state.chatUser);
-  // const { user:{ fullname='', userId = 0, gravatar='', color = 'red'  } = {} } = useSelector(state => state.chatUser);
 
   const channelId = useSelector(state => state.chatChannel.channelId || 0);
   const user = useSelector(state => state.chatUser.user || {});
-  const { fullname='', userId = 0, gravatar='', color = 'red'  } = user;
+  const { fullname:name='', userId = 0, gravatar='', color = 'red'  } = user;
 
   const [message, setMessage] = useState('');
 
@@ -63,7 +51,7 @@ const ChatBoxInput = ({handleSendMessage}) => {
   const handleSendCurrentMessage = (e) => {
     e.preventDefault();
     const messageId = Date.now();
-    handleSendMessage({ fullname, gravatar, color, userId, message, messageId });
+    handleSendMessage({ name, gravatar, color, userId, message, messageId });
     setMessage('');
   }
   const handleMouseDown = (e) => { console.log('mouse is down') }//e.preventDefault();}

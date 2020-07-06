@@ -1,54 +1,82 @@
-import React, { useState, useStyle, useMemo, useCallback, useRef, useEffect, shallowEqual } from 'react';
+import React, { useState, useStyle, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import findKey from 'lodash/findKey';
 import Container from '@material-ui/core/Container';
+import { useParams } from "react-router-dom";
 
 import ChatBoxMessageList from './ChatBoxMessageList';
 import ChatBoxInput from './ChatBoxInput';
 import ChatInput from './ChatInput';
+import { fetchMessageHistory, updateMessageHistory } from '../../ducks/messageHistory.duck';
+
+const WEBSOCKET_BASE_URL = process.env.WEBSOCKET_BASE_URL || 'ws:localhost:8001/socket';
 
 const useStyles = makeStyles((theme) => ({
   chatbox: {
     display: 'flex',
     flexDirection: 'column',
     maxWidth: "lg",
-    // height: "500px",
     display: 'relative',
     overflow: 'auto',
     height: '50vh',
-    // minHeight: "100%",
-    // display: "flex",
-    // flexDirection: "column",
-    // margin: "normal"
   },
 }));
 
-const ChatBoxWindow = ({userId, channelId}) => {
-  const { chatbox } = useStyles();
 
-  const WEBSOCKET_BASE_URL = process.env.WEBSOCKET_BASE_URL || 'ws:localhost:8001/socket';
-
-  console.log('CHANNEL ID', channelId);
+const ChatBoxWindow = ({userId}) => {
+  const dispatch = useDispatch();
+  const { number:channelId } = useParams();
   const socketUrl = `${WEBSOCKET_BASE_URL}${userId}/channel/${channelId}`;
 
-  const messageHistory = useRef([]);
+  // let websocket;
+  //
+  // useEffect(() => {
+  //   websocket = new WebSocket(socketUrl);
+  // },
+  // [channelId]);
+
+  // const websocket = new WebSocket(socketUrl);
+
+//   useEffect(() => {
+//     websocket.onopen = () => console.log(`connected to socket at ${websocket}`);
+//     websocket.onmessage = evt => dispatch(updateMessageHistory(JSON.parse(channelId, evt.data)))
+//   //   websocket.onopen = evt => {
+//   //     const msg = JSON.parse(evt.data);
+//   //     console.log('OPEN------------------', msg);
+//   //     dispatch(updateMessageHistory(msg))}
+//     websocket.onmessage = evt => {
+//       const msg = JSON.parse(evt.data);
+//       console.log('MESSAGE------------------', msg, channelId);
+//       dispatch(updateMessageHistory(channelId, msg))}
+// }, [websocket]);
+//
+//
+//   useEffect(() => {
+//     dispatch(fetchMessageHistory(channelId))
+//   },
+//   [channelId]);
+//
+//   const handleSendMessage = useCallback((message) => {
+//     websocket.send(JSON.stringify(message))
+//   }, []);
+
+  useEffect(() => {
+    dispatch(fetchMessageHistory(channelId))
+  },
+  [channelId]);
 
   const {
-  sendJsonMessage,
-  lastJsonMessage,
-  readyState,
-  getWebSocket
-} = useWebSocket(socketUrl, {
-  onOpen: () => console.log('opened'),
-  //Will attempt to reconnect on all close events, such as server shutting down
-  shouldReconnect: (closeEvent) => true,
-});
-
-
-messageHistory.current = useMemo(() => messageHistory.current.concat(lastJsonMessage),[lastJsonMessage]);
-
+    sendJsonMessage,
+    lastJsonMessage,
+    readyState,
+    getWebSocket
+  } = useWebSocket(socketUrl, {
+    onOpen: () => console.log('opened'),
+    shouldReconnect: (closeEvent) => true,
+  });
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: 'Connecting',
@@ -59,14 +87,24 @@ messageHistory.current = useMemo(() => messageHistory.current.concat(lastJsonMes
   }[readyState];
 
   const handleSendMessage = useCallback((message) => {
-    console.log('MESSAGE--->', message, messageHistory.current);
     sendJsonMessage(message)
-    // sendMessage("Hello")
   }, []);
+
+  useEffect(() => {
+    dispatch(updateMessageHistory(channelId, lastJsonMessage))
+  },
+  [lastJsonMessage]);
+
+  const messages = useSelector(state => {
+    console.log('SELECTOR STATE', state);
+    return state.messageHistory.messages && state.messageHistory.messages[channelId] || [];
+  })
+
+  const { chatbox } = useStyles();
 
   return (
     <Container fixed className={chatbox} maxWidth="lg" spacing={1}>
-    <ChatBoxMessageList messages={messageHistory.current}/>
+    <ChatBoxMessageList {...{messages}}/>
     <ChatBoxInput {...{handleSendMessage}}/>
     </Container>
   )

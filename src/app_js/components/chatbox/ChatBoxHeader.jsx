@@ -11,18 +11,18 @@ const useStyles = makeStyles((theme) => ({
   titleContainer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(1, 0, 1),
-    marginBottom: '10px'
+    marginBottom: '5px'
   },
   title: {
     textAlign: "start",
-    fontSize: "3.5em",
+    fontSize: "2.3em",
     margin: "normal",
-    marginBottom: "5px",
+    marginBottom: "1px",
     fontFamily: "fantasy,cursive,sans-serif,auto"
   },
   subtitle: {
     textAlign: "start",
-    fontSize: "0.9em",
+    fontSize: "0.8em",
     fontFamily: "serif,auto"
   }
 }))
