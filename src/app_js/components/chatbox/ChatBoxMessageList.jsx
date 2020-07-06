@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 const ChatBoxMessageList = ({messages}) => {
   const pick = array => array[Math.floor(array.length * Math.random())];
   const { container, list, listItem, avatar, inline, itemText } = useStyles();
-  console.log(messages)
 
   return (
     <>

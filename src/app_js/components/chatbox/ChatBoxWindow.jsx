@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import ChatBoxMessageList from './ChatBoxMessageList';
 import ChatBoxInput from './ChatBoxInput';
 import ChatInput from './ChatInput';
-import { fetchMessageHistory, updateMessageHistory, createWebsocket } from '../../ducks/messageHistory.duck';
+import { fetchMessageHistory, updateMessageHistory } from '../../ducks/messageHistory.duck';
 
 const WEBSOCKET_BASE_URL = process.env.WEBSOCKET_BASE_URL || 'ws:localhost:8001/socket';
 
@@ -30,49 +30,6 @@ const ChatBoxWindow = ({userId}) => {
   const dispatch = useDispatch();
   const { number:channelId } = useParams();
   const socketUrl = `${WEBSOCKET_BASE_URL}${userId}/channel/${channelId}`;
-
-//   // let websocket;
-//   //
-//   useEffect(async () => {
-//     // websocket = new WebSocket(socketUrl);
-//     await dispatch(createWebsocket(channelId, socketUrl));
-//   },
-//   [channelId]);
-//
-//   // const websocket = new WebSocket(socketUrl);
-//   // const websocket = useSelector(state => state.messageHistory.websockets[channelId])
-//   const websocket = useSelector(state => {
-//     console.log('WEB SELECTOR STATE', state);
-//     // debugger;
-//     return state.messageHistory.websockets && state.messageHistory.websockets[channelId] || [];
-//   })
-//
-//   useEffect(() => {
-//     console.log('======================================', websocket)
-//      websocket.onopen = () => console.log(`connected to socket at ${websocket}`);
-//      websocket.onmessage = evt => dispatch(updateMessageHistory(channelId, JSON.parse(evt.data)))
-//   //   websocket.onopen = evt => {
-//   //     const msg = JSON.parse(evt.data);
-//   //     console.log('OPEN------------------', msg);
-//   //     dispatch(updateMessageHistory(msg))}
-//     // websocket.onmessage = evt => {
-//     //   const msg = JSON.parse(evt.data);
-//     //   console.log('MESSAGE------------------', msg, channelId);
-//     //   dispatch(updateMessageHistory(channelId, msg))}
-// }, [websocket]);
-//
-//
-//   useEffect(async () => {
-//     await dispatch(fetchMessageHistory(channelId))
-//   },
-//   [channelId]);
-//
-//   const handleSendMessage = useCallback((message) => {
-//     console.log('===============++++++=======================', websocket)
-//     websocket.send(JSON.stringify(message))
-//   }, []);
-
-
 
   useEffect(() => {
     dispatch(fetchMessageHistory(channelId))

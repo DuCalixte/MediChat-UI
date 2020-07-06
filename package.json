@@ -39,6 +39,7 @@
     "fastify-nextjs": "^5.0.1",
     "fastify-plugin": "^1.5.0",
     "fastify-static": "^2.7.0",
+    "global": "^4.4.0",
     "history": "^4.7.2",
     "immutable": "^3.8.1 || ^4.0.0-rc.1",
     "lodash": "^4.17.15",
@@ -70,6 +71,7 @@
     "babel-plugin-styled-components": "^1.10.7",
     "babel-preset-react-app": "^9.1.2",
     "parcel-bundler": "^1.12.4",
+    "semistandard": "^14.2.2",
     "tap": "^12.5.3"
   }
 }
