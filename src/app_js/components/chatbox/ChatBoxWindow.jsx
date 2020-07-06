@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import ChatBoxMessageList from './ChatBoxMessageList';
 import ChatBoxInput from './ChatBoxInput';
 import ChatInput from './ChatInput';
-import { fetchMessageHistory, updateMessageHistory } from '../../ducks/messageHistory.duck';
+import { fetchMessageHistory, updateMessageHistory, createWebsocket } from '../../ducks/messageHistory.duck';
 
 const WEBSOCKET_BASE_URL = process.env.WEBSOCKET_BASE_URL || 'ws:localhost:8001/socket';
 
@@ -31,37 +31,48 @@ const ChatBoxWindow = ({userId}) => {
   const { number:channelId } = useParams();
   const socketUrl = `${WEBSOCKET_BASE_URL}${userId}/channel/${channelId}`;
 
-  // let websocket;
-  //
-  // useEffect(() => {
-  //   websocket = new WebSocket(socketUrl);
-  // },
-  // [channelId]);
-
-  // const websocket = new WebSocket(socketUrl);
-
+//   // let websocket;
+//   //
+//   useEffect(async () => {
+//     // websocket = new WebSocket(socketUrl);
+//     await dispatch(createWebsocket(channelId, socketUrl));
+//   },
+//   [channelId]);
+//
+//   // const websocket = new WebSocket(socketUrl);
+//   // const websocket = useSelector(state => state.messageHistory.websockets[channelId])
+//   const websocket = useSelector(state => {
+//     console.log('WEB SELECTOR STATE', state);
+//     // debugger;
+//     return state.messageHistory.websockets && state.messageHistory.websockets[channelId] || [];
+//   })
+//
 //   useEffect(() => {
-//     websocket.onopen = () => console.log(`connected to socket at ${websocket}`);
-//     websocket.onmessage = evt => dispatch(updateMessageHistory(JSON.parse(channelId, evt.data)))
+//     console.log('======================================', websocket)
+//      websocket.onopen = () => console.log(`connected to socket at ${websocket}`);
+//      websocket.onmessage = evt => dispatch(updateMessageHistory(channelId, JSON.parse(evt.data)))
 //   //   websocket.onopen = evt => {
 //   //     const msg = JSON.parse(evt.data);
 //   //     console.log('OPEN------------------', msg);
 //   //     dispatch(updateMessageHistory(msg))}
-//     websocket.onmessage = evt => {
-//       const msg = JSON.parse(evt.data);
-//       console.log('MESSAGE------------------', msg, channelId);
-//       dispatch(updateMessageHistory(channelId, msg))}
+//     // websocket.onmessage = evt => {
+//     //   const msg = JSON.parse(evt.data);
+//     //   console.log('MESSAGE------------------', msg, channelId);
+//     //   dispatch(updateMessageHistory(channelId, msg))}
 // }, [websocket]);
 //
 //
-//   useEffect(() => {
-//     dispatch(fetchMessageHistory(channelId))
+//   useEffect(async () => {
+//     await dispatch(fetchMessageHistory(channelId))
 //   },
 //   [channelId]);
 //
 //   const handleSendMessage = useCallback((message) => {
+//     console.log('===============++++++=======================', websocket)
 //     websocket.send(JSON.stringify(message))
 //   }, []);
+
+
 
   useEffect(() => {
     dispatch(fetchMessageHistory(channelId))
@@ -96,7 +107,6 @@ const ChatBoxWindow = ({userId}) => {
   [lastJsonMessage]);
 
   const messages = useSelector(state => {
-    console.log('SELECTOR STATE', state);
     return state.messageHistory.messages && state.messageHistory.messages[channelId] || [];
   })
 
