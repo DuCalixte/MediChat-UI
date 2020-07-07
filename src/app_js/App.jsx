@@ -5,12 +5,12 @@ import { store } from './utilities/store';
 import './App.scss';
 
 export default class App extends Component {
-  render() {
+  render () {
     // const context = ReactReduxContext;
     return (
-      <Provider {...{store}}>
-        <Routers/>
+      <Provider {...{ store }}>
+        <Routers />
       </Provider>
-    )
+    );
   }
 }
