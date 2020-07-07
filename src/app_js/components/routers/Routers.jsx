@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Redirect,
-  Link,
-  useHistory
-} from "react-router-dom";
+  Route
+} from 'react-router-dom';
 
 import { PrivateRoute } from './PrivateRoute';
 
@@ -21,34 +17,18 @@ import {
   APP_CHAT_URI
 } from '../../constants/appConstants';
 
-
 const Routers = () => {
-  // const isLoggedIn = useSelector(state => state.chatUser.isLoggedIn);
-  // console.log('ROUTERS', isLoggedIn);
-  // const dispatch = useDispatch();
-  // const history = useHistory();
-  //
-  // console.log('HISTORY', history)
-  //
-  // // reset login status
-  // useEffect(() => {
-  //   console.log('ROUTERS', isLoggedIn);
-  //   console.log('ROUTERS: location', location);
-  //   console.log('ROUTERS: context', context);
-  //   console.log('ROUTERS: history', history);
-  //   if(isLoggedIn) history.push("/");
-  // }, [isLoggedIn, location]);
   return (
     <Router>
       <Switch>
-        <PrivateRoute exact path="/" component={ChatPage} />
+        <PrivateRoute exact path='/' component={ChatPage} />
         <PrivateRoute path={APP_CHAT_URI} component={ChatPage} />
         <Route path={APP_REGISTER_URI} component={LoginPage} />
         <Route path={APP_LOGIN_URI} component={LoginPage} />
-        <Route path="*" component={ErrorPage} />
+        <Route path='*' component={ErrorPage} />
       </Switch>
     </Router>
-  )
-}
+  );
+};
 
 export default Routers;

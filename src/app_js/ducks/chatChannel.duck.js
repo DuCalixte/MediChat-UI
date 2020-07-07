@@ -1,4 +1,4 @@
-import { apiService } from "../utilities/api";
+import { apiService } from '../utilities/api';
 
 import {
   CHAT_CHANNEL_REQUEST,
@@ -6,10 +6,9 @@ import {
   CHAT_CHANNEL_FAILURE
 } from '../constants/reducerConstants';
 
-
 const initialState = { name: '', description: '', chatBot: null, isPrivate: null, users: {}, websocket: '', channelId: 0 };
 
-export function chatChannelReducer(state = initialState, action = {}) {
+export function chatChannelReducer (state = initialState, action = {}) {
   switch (action.type) {
     case CHAT_CHANNEL_REQUEST:
       return { };
@@ -24,21 +23,21 @@ export function chatChannelReducer(state = initialState, action = {}) {
 }
 
 export const loadChatChannel = id => {
-  const request = () => ({ type: CHAT_CHANNEL_REQUEST })
-  const success = ({name, description, chatBot, isPrivate, users, websocket, channelId}) => ({ type: CHAT_CHANNEL_SUCCESS, name, description, chatBot, isPrivate, users, websocket, channelId })
+  const request = () => ({ type: CHAT_CHANNEL_REQUEST });
+  const success = ({ name, description, chatBot, isPrivate, users, websocket, channelId }) => ({ type: CHAT_CHANNEL_SUCCESS, name, description, chatBot, isPrivate, users, websocket, channelId });
   const failure = error => ({ type: CHAT_CHANNEL_FAILURE, error });
 
   return dispatch => {
     dispatch(request());
     apiService.loadChatChannel(id)
-    .then(payload => {
-      dispatch(success(payload));
+      .then(payload => {
+        dispatch(success(payload));
       // dispatch(alertActions.success('Registration successful'));
-    },
-    error => {
-      console.log('ERROR CALLING') // TODO: REMOVE - DEBUGGING ONLY
-      dispatch(failure(error.toString()));
+      },
+      error => {
+        console.log('ERROR CALLING'); // TODO: REMOVE - DEBUGGING ONLY
+        dispatch(failure(error.toString()));
       // dispatch(alertActions.error(error.toString()));
-    });
-  }
-}
+      });
+  };
+};
