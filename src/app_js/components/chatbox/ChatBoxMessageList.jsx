@@ -1,18 +1,14 @@
-import React, { useReducer } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import map from 'lodash/map';
 import compact from 'lodash/compact';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import ImageIcon from '@material-ui/icons/Image';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 'lg',
     overflowY: 'scroll',
     scrollBehavior: 'smooth',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper
   },
   list: {
     maxWidth: 'sm',
@@ -34,42 +30,42 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     width: theme.spacing(3),
-    height: theme.spacing(3),
+    height: theme.spacing(3)
   },
   itemText: {
-    fontSize: '0.9em',
+    fontSize: '0.9em'
   },
   inline: {
-    display: 'inline',
-  },
+    display: 'inline'
+  }
 }));
 
-const ChatBoxMessageList = ({messages}) => {
+const ChatBoxMessageList = ({ messages }) => {
   const pick = array => array[Math.floor(array.length * Math.random())];
   const { container, list, listItem, avatar, inline, itemText } = useStyles();
 
   return (
     <>
-    <CssBaseline />
-    <Container fixed className={container}>
-      <List className={list}>
-      {map(compact(messages), ({name, gravatar, color, message, messageId} = {}) => (
-        <ListItem key={messageId} className={listItem} alignItems="flex-start" style={{backgroundColor: 'transparent', marginLeft: pick([12,24,36]) + 'px'}}>
-        <ListItemAvatar><Avatar className={avatar} alt={name} src={gravatar} /></ListItemAvatar>
-        <ListItemText style={{background: color}} className={itemText}
-          primary={name}
-          secondary={<span>{message}</span>}
-        />
-      </ListItem>
-      ))}
-      </List>
-    </Container>
+      <CssBaseline />
+      <Container fixed className={container}>
+        <List className={list}>
+          {map(compact(messages), ({ name, gravatar, color, message, messageId } = {}) => (
+            <ListItem key={messageId} className={listItem} alignItems='flex-start' style={{ backgroundColor: 'transparent', marginLeft: pick([12, 24, 36]) + 'px' }}>
+              <ListItemAvatar><Avatar className={avatar} alt={name} src={gravatar} /></ListItemAvatar>
+              <ListItemText
+                style={{ background: color }} className={itemText}
+                primary={name}
+                secondary={<span>{message}</span>}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Container>
     </>
-  )
+  );
 };
 
 export default ChatBoxMessageList;
-
 
 //
 // (function(){

@@ -21,22 +21,18 @@ export function messageHistoryReducer (state = initialState, action = {}) {
   }
 }
 
-const isIdFailure = id => {
-  return (!id || id === undefined || id === 'undefined');
-};
-
 export const createWebsocket = (id, url) => async (dispatch, getState) => {
   const request = (newSocket) => ({ type: CHAT_WEBSOCKETS_CREATE_REQUEST, payload: { newSocket } });
-  if (isIdFailure) return dispatch({ type: CHAT_MESSAGE_HISTORY_FAILURE_REQUEST });
 
   const { messageHistory: { websockets = {} } } = getState();
   const newSocket = keys(websockets).includes(id.toString()) ? websockets[id] : new WebSocket(url);
   return dispatch(request({ [id]: newSocket }));
 };
 
+
 export const fetchMessageHistory = id => async (dispatch, getState) => {
-  const request = (message) => ({ type: CHAT_MESSAGES_LIST_REQUEST, payload: { message } });
-  if (isIdFailure) return dispatch({ type: CHAT_MESSAGE_HISTORY_FAILURE_REQUEST });
+  const request = (message) => ({ type: CHAT_MESSAGES_LIST_REQUEST, payload: { message }});
+  if (id === null || id === undefined) return dispatch({ type: CHAT_MESSAGE_HISTORY_FAILURE_REQUEST });
 
   const { messageHistory: { messages = {} } } = getState();
   const newMessage = keys(messages).includes(id.toString()) ? messages[id] : [];
@@ -45,7 +41,7 @@ export const fetchMessageHistory = id => async (dispatch, getState) => {
 
 export const updateMessageHistory = (id, data) => async (dispatch, getState) => {
   const request = (message) => ({ type: CHAT_MESSAGES_LIST_REQUEST, payload: { message } });
-  if (isIdFailure) return dispatch({ type: CHAT_MESSAGE_HISTORY_FAILURE_REQUEST });
+  if (id === null || id === undefined) return dispatch({ type: CHAT_MESSAGE_HISTORY_FAILURE_REQUEST });
 
   const { messageHistory: { messages = {} } } = getState();
   const newMessage = keys(messages).includes(id.toString()) ? [...messages[id], data] : [data];

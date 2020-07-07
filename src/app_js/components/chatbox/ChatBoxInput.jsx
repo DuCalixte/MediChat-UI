@@ -1,18 +1,11 @@
-import React, {useState} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import FilledInput from '@material-ui/core/FilledInput';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import SendIcon from '@material-ui/icons/Send';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,63 +17,64 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 'md'
   },
   margin: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(1)
   },
   withoutLabel: {
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(3)
   },
   textField: {
     verticalAlign: 'bottom',
-    width: '100%',
-  },
+    width: '100%'
+  }
 }));
 
-const ChatBoxInput = ({handleSendMessage}) => {
-  const { chatForm, margin, textField, button } = useStyles();
+const ChatBoxInput = ({ handleSendMessage }) => {
+  const { chatForm, margin, textField } = useStyles();
 
-  const channelId = useSelector(state => state.chatChannel.channelId || 0);
   const user = useSelector(state => state.chatUser.user || {});
-  const { fullname:name='', userId = 0, gravatar='', color = 'red'  } = user;
+  const { fullname: name = '', userId = 0, gravatar = '', color = 'red' } = user;
 
   const [message, setMessage] = useState('');
 
   const handleMessageChange = (e) => {
     e.preventDefault();
     setMessage(e.target.value);
-  }
+  };
   const handleSendCurrentMessage = (e) => {
     e.preventDefault();
     const messageId = Date.now();
     handleSendMessage({ name, gravatar, color, userId, message, messageId });
     setMessage('');
-  }
-  const handleMouseDown = (e) => { console.log('mouse is down') }//e.preventDefault();}
+  };
+  const handleMouseDown = (e) => { console.log('mouse is down'); };// e.preventDefault();}
 
   return (
     <div className={chatForm}>
-      <FormControl className={clsx(margin, textField)} variant="outlined">
+      <FormControl className={clsx(margin, textField)} variant='outlined'>
         <TextField
-            label="Type Message..."
-            id="insert-message-to-channel"
-            multiline
-            rowsMax={4}
-            value={message}
-            onChange={handleMessageChange}
-            className={clsx(margin, textField)}
-            InputProps={{
-              endAdornment: <InputAdornment position="end">
+          label='Type Message...'
+          id='insert-message-to-channel'
+          multiline
+          rowsMax={4}
+          value={message}
+          onChange={handleMessageChange}
+          className={clsx(margin, textField)}
+          InputProps={{
+            endAdornment: <InputAdornment position='end'>
               <IconButton
-                aria-label="toggle message visibility"
+                aria-label='toggle message visibility'
                 onClick={handleSendCurrentMessage}
                 onMouseDown={handleMouseDown}
-                edge="end">
+                edge='end'
+              >
                 {message ? <SendIcon /> : <SendIcon />}
               </IconButton>
-              </InputAdornment>,
-            }}/>
+            </InputAdornment>
+          }}
+        />
       </FormControl>
     </div>
-  )
+  );
 };
 
 export default ChatBoxInput;

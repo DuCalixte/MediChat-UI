@@ -11,18 +11,18 @@ const useStyles = makeStyles((theme) => ({
     align: 'center',
     color: theme.palette.primary.dark,
     fontFamily: 'Georgia,sans-serif,auto'
-  },
+  }
 }));
 
 const ChatUser = () => {
   const user = useSelector(state => state.chatUser.user || {});
-  const { userId, fullname }  = user;
+  const { userId, fullname } = user;
   const classes = useStyles();
   return (
     <ListItem key={userId}>
-      <Typography component="h5" variant="h5" className={classes.text} gutterBottom>{fullname}</Typography>
+      <Typography component='h5' variant='h5' className={classes.text} gutterBottom>{fullname}</Typography>
     </ListItem>
-  )
+  );
 };
 
 export default ChatUser;

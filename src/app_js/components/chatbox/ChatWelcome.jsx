@@ -12,24 +12,24 @@ import { CHAT_WELCOME_MESSAGE_TITLE, CHAT_WELCOME_MESSAGE_SUBTITLE, CHAT_SIDE_BA
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
+    height: '100vh'
   },
   content: {
     flexGrow: 3,
     padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      duration: theme.transitions.duration.leavingScreen
     }),
-    marginLeft: 0,
+    marginLeft: 0
   },
   contentAlt: {
     flexGrow: 3,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
+      duration: theme.transitions.duration.enteringScreen
     }),
-    marginLeft: CHAT_SIDE_BAR_WIDTH,
+    marginLeft: CHAT_SIDE_BAR_WIDTH
   },
   main: {
     marginTop: theme.spacing(8),
@@ -43,43 +43,45 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundPosition: 'center'
   },
   paper: {
     margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'center'
   },
-  title:{
+  title: {
     fontFamily: 'fantasy,bookman,sans-serif,auto'
   },
-  subtitle:{
+  subtitle: {
     fontFamily: 'bookman,sans-serif,auto'
   }
 }));
 
-const ChatWelcome = ({open}) => {
+const ChatWelcome = ({ open }) => {
   const { root, content, contentAlt, image, main, title, subtitle } = useStyles();
   return (
 
     <Paper className={image}>
-    <Grid container component="main" className={root, clsx(content, {
-      [contentAlt]: open,
-    })}>
-    <Grid item md={6}>
-          <Container component="main" className={main} maxWidth="sm">
-            <Typography component="h1" variant="h3" color="inherit" className={title} gutterBottom>
+      <Grid
+        container component='main' className={root, clsx(content, {
+          [contentAlt]: open
+        })}
+      >
+        <Grid item md={6}>
+          <Container component='main' className={main} maxWidth='sm'>
+            <Typography component='h1' variant='h3' color='inherit' className={title} gutterBottom>
               {CHAT_WELCOME_MESSAGE_TITLE}
             </Typography>
-            <Typography variant="h5" color="inherit" className={subtitle} paragraph>
+            <Typography variant='h5' color='inherit' className={subtitle} paragraph>
               {CHAT_WELCOME_MESSAGE_SUBTITLE}
             </Typography>
           </Container>
         </Grid>
-        </Grid>
+      </Grid>
     </Paper>
-  )
+  );
 };
 
 export default ChatWelcome;
