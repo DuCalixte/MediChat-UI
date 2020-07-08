@@ -1,7 +1,9 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { fade, makeStyles } from '@material-ui/core/styles';
+import values from 'lodash/values';
+import compact from 'lodash/compact';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,18 +12,21 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
-// import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
+import HomeIcon from '@material-ui/icons/Home';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import { logout } from '../../ducks/chatUser.duck';
 import { background } from '../../utilities/img/navBackground';
+import { useHistory } from 'react-router-dom';
+import { fetchMessageHistory } from '../../ducks/messageHistory.duck';
 
 import {
   CHAT_SIDE_BAR_WIDTH,
   CHAT_TITLE_LABEL,
   CHAT_SIGN_OUT_LABEL
 } from '../../constants/chatConstants';
+import { APP_GITHUB_URI, APP_HOME_URI } from '../../constants/appConstants';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -90,13 +95,24 @@ const useStyles = makeStyles((theme) => ({
 
 const ChatHeader = ({ open, handleOpenToggle }) => {
   const dispatch = useDispatch();
+
+  const history = useHistory();
   const classes = useStyles();
-  // const [statusLabel, setStatusLabel] = useState(CHAT_SIGN_OUT_LABEL);
 
   const handleSignin = e => {
     e.preventDefault();
     dispatch(logout());
   };
+
+  useEffect(() => { dispatch(fetchMessageHistory()); });
+
+  // Basically this is a hack
+  const count = useSelector(state => {
+    const messages = state.messageHistory.messages || {};
+    const list = values(messages).map(x => compact(x).length === 0 ? 0 : compact(x));
+    if (list.length === 0) return 0;
+    return list.map(x => x.length).reduce((a, c) => a + c);
+  });
 
   return (
     <div className={classes.grow}>
@@ -122,13 +138,14 @@ const ChatHeader = ({ open, handleOpenToggle }) => {
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label='show number of users in the community' color='inherit'>
-              <Badge badgeContent={4} color='secondary'>
-                <MailIcon />
-              </Badge>
+            <IconButton aria-label='Go Home' color='inherit' onClick={() => history.push(APP_HOME_URI)}>
+              <HomeIcon />
+            </IconButton>
+            <IconButton aria-label='Open Github' color='inherit' onClick={() => window.open(APP_GITHUB_URI, '_blank')}>
+              <GitHubIcon />
             </IconButton>
             <IconButton aria-label='show number of notifications' color='inherit'>
-              <Badge badgeContent={17} color='secondary'>
+              <Badge badgeContent={count} color='secondary'>
                 <NotificationsIcon />
               </Badge>
             </IconButton>
