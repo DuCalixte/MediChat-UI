@@ -1,0 +1,33 @@
+version: '3'
+services:
+  web:
+    image: web
+    container_name: medichat_ui
+    build: .
+    ports:
+      - "0.0.0.0:8081:8081"
+      - "0.0.0.0:3000:3000"
+    expose:
+      - 3000
+      - 8081
+      - 80
+    restart: on-failure
+    environment:
+      SERVER_ROLE: "WEB"
+    env_file:
+      ".docker/.env"
+    volumes:
+      - web:/home/node/app
+    depends_on:
+      []
+    networks:
+      - medichat
+
+
+volumes:
+  web:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  medichat:
+    driver: bridge

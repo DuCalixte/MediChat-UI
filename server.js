@@ -5,8 +5,8 @@ require('dotenv').config()
 
 // Require the framework
 const Fastify = require('fastify')
-const port = process.env.FASTIFY_PORT || 3000;
-const host = process.env.FASTIFY_ADDRESS || "localhost";
+const port = process.env.FASTIFY_PORT || 8080;
+const host = process.env.FASTIFY_ADDRESS || "0.0.0.0";
 const backlog = process.env.FASTIFY_BACKLOG || 511
 const logLevel = process.env.FASTIFY_LOG_LEVEL || 'info'
 const pluginTimeout = process.env.FASTIFY_PLUGIN_TIMEOUT || 10000
